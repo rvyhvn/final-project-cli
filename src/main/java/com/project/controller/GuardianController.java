@@ -1,13 +1,14 @@
-package com.project;
+package com.project.controller;
 
+import com.project.model.*;
 import java.sql.*;
 import java.util.Scanner;
 
-public class MenuGuardian {
+public class GuardianController {
     private static Scanner scanner = new Scanner(System.in);
     private Connection connection;
 
-    public MenuGuardian(Connection connection) {
+    public GuardianController(Connection connection) {
       this.connection = connection;
     }
 

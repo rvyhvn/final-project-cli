@@ -1,5 +1,9 @@
-package com.project;
-import java.sql.*;
+package com.project.model;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Guardian {
     private int id;
@@ -16,6 +20,8 @@ public class Guardian {
         this.email = email;
         this.phone = phone;
     }
+
+    // Getter dan setter
 
     public int getId() {
         return id;
@@ -49,12 +55,14 @@ public class Guardian {
         this.phone = phone;
     }
 
+    // Metode untuk operasi CRUD
+
     public void tambahGuardian(Connection connection) throws SQLException {
         String query = "INSERT INTO guardian (nama, email, phone) VALUES (?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, this.nama);
-        statement.setString(2, this.email);
-        statement.setString(3, this.phone);
+        statement.setString(1, nama);
+        statement.setString(2, email);
+        statement.setString(3, phone);
         statement.executeUpdate();
         statement.close();
     }
@@ -62,10 +70,10 @@ public class Guardian {
     public void updateGuardian(Connection connection) throws SQLException {
         String query = "UPDATE guardian SET nama = ?, email = ?, phone = ? WHERE id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, this.nama);
-        statement.setString(2, this.email);
-        statement.setString(3, this.phone);
-        statement.setInt(4, this.id);
+        statement.setString(1, nama);
+        statement.setString(2, email);
+        statement.setString(3, phone);
+        statement.setInt(4, id);
         statement.executeUpdate();
         statement.close();
     }
@@ -73,7 +81,7 @@ public class Guardian {
     public void hapusGuardian(Connection connection) throws SQLException {
         String query = "DELETE FROM guardian WHERE id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, this.id);
+        statement.setInt(1, id);
         statement.executeUpdate();
         statement.close();
     }
@@ -86,16 +94,14 @@ public class Guardian {
 
         Guardian guardian = null;
         if (resultSet.next()) {
-            guardian = new Guardian();
-            guardian.setId(resultSet.getInt("id"));
-            guardian.setNama(resultSet.getString("nama"));
-            guardian.setEmail(resultSet.getString("email"));
-            guardian.setPhone(resultSet.getString("phone"));
+            String nama = resultSet.getString("nama");
+            String email = resultSet.getString("email");
+            String phone = resultSet.getString("phone");
+            guardian = new Guardian(id, nama, email, phone);
         }
 
         resultSet.close();
         statement.close();
-
         return guardian;
     }
 }

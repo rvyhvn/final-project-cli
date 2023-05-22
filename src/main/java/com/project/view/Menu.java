@@ -1,5 +1,7 @@
-package com.project;
+package com.project.view;
 
+import com.project.*;
+import com.project.controller.*;
 import java.util.Scanner;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -25,10 +27,10 @@ public class Menu {
             int pilihan = scanner.nextInt();
 
             if (pilihan == 1) {
-                MenuSiswa menuSiswa = new MenuSiswa(connection);
+                SiswaController menuSiswa = new SiswaController(connection);
                 menuSiswa.displayMenu(connection);
             } else if (pilihan == 2) {
-                MenuGuardian menuGuardian = new MenuGuardian(connection);
+                GuardianController menuGuardian = new GuardianController(connection);
                 menuGuardian.displayMenu(connection);
             } else if (pilihan == 3) {
                 System.out.println("Anda selesai menggunakan program");
