@@ -2,6 +2,7 @@
 *.class
 *.jar
 pom.xml
+.gitignore
 
 # Folders
 target/
