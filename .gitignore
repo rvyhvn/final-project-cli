@@ -1,0 +1,10 @@
+# Files
+*.class
+*.jar
+pom.xml
+
+# Folders
+target/
+.git/
+
+
