@@ -15,8 +15,6 @@ public class Menu {
         this.connection = connection;
     }
 
-
-
     public void displayMenu() {
         while (true) {
             System.out.println("=== MENU UTAMA ===");
