@@ -3,6 +3,7 @@ package com.project.model;
 public class Kelas {
     private int id;
     private String nama;
+    private String jenisKelas;
     private Guru guru;
     private Siswa siswa;
 
@@ -28,6 +29,14 @@ public class Kelas {
 
     public void setNama(String nama) {
         this.nama = nama;
+    }
+
+    public String getJenisKelas(){
+      return jenisKelas;
+    }
+
+    public void setJenisKelas(String jenisKelas){
+      this.jenisKelas = jenisKelas;
     }
 
     public Guru getEmail() {
