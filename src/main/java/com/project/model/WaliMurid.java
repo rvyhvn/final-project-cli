@@ -11,21 +11,28 @@ public class WaliMurid extends Entity {
     private ArrayList<Siswa> anak;
 
     public WaliMurid(int id, String nama, String email, String phone, ArrayList<Siswa> anak) {
-        super(nama, email, phone);
-        this.id = id;
-        this.anak = anak;
+      super(nama, email, phone);
+      this.id = id;
+      this.anak = anak;
     }
 
     // Getter dan setter
 
     public int getId() {
-        return id;
+      return id;
     }
 
     public void setId(int id) {
-        this.id = id;
+      this.id = id;
     }
 
+    public ArrayList<Siswa> getAnak(){
+      return anak;
+    }
+
+    public void setAnak(ArrayList<Siswa> anak){
+      this.anak = anak;
+    }
     // Metode untuk operasi CRUD
 
 }
