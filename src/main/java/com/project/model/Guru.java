@@ -1,49 +1,45 @@
 package com.project.model;
 
-public class Guru {
-    private int id;
-    private String nama;
-    private String email;
-    private String phone;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
-    public Guru(int id, String nama, String email, String phone) {
-        this.id = id;
-        this.nama = nama;
-        this.email = email;
-        this.phone = phone;
-    }
+/**
+ * Guru
+ */
+public class Guru extends Entity {
 
-    // Getter dan setter
-    public int getId() {
-        return id;
-    }
+  private int idGuru;
+  private ArrayList<Kelas> kelas;
+  private ArrayList<Laporan> laporan;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public Guru(int idGuru, String nama, String email, String phone, ArrayList<Kelas> kelas, ArrayList<Laporan> laporan) {
+    super(nama, email, phone);
+    this.idGuru = idGuru;
+    this.kelas = kelas;
+    this.laporan = laporan;
+  }
 
-    public String getNama() {
-        return nama;
-    }
+  public int getIdGuru(){
+    return idGuru;
+  }
 
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
+  public void setIdGuru(int idGuru){
+    this.idGuru = idGuru;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public ArrayList<Kelas> getKelas(){
+    return kelas;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setKelas(ArrayList<Kelas> kelas){
+    this.kelas = kelas;
+  }
 
-    public String getPhone() {
-        return phone;
-    }
+  public ArrayList<Laporan> getLaporan(){
+    return laporan;
+  }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-    
+  public void setLaporan(ArrayList<Laporan> laporan){
+    this.laporan = laporan;
+  }
 }

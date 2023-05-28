@@ -1,58 +1,43 @@
 package com.project.model;
 
+/**
+ * Kelas
+ */
 public class Kelas {
-    private int id;
-    private String nama;
-    private String jenisKelas;
-    private Guru guru;
-    private Siswa siswa;
 
-    public Kelas(int id, String nama,Guru guru, Siswa siswa) {
-        this.id = id;
-        this.nama = nama;
-        this.guru = guru;
-        this.siswa = siswa;
-    }
+  private int idKelas;
+  private String tingkat;
+  private int urutan;
+  private boolean isIpa;
+  private Guru guru;
+  private Siswa siswa;
 
-    // Getter dan setter
-    public int getId() {
-        return id;
-    }
+  public Kelas(int idKelas, String tingkat, int urutan, boolean isIpa, Guru guru, Siswa siswa) {
+    this.idKelas = idKelas;
+    this.tingkat = tingkat;
+    this.urutan = urutan;
+    this.isIpa = isIpa;
+    this.guru = guru;
+    this.siswa = siswa;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public int getIdKelas(){
+    return idKelas;
+  }
 
-    public String getNama() {
-        return nama;
-    }
+  public String getTingkat(){
+    return tingkat;
+  }
 
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
+  public int getUrutan(){
+    return urutan;
+  }
 
-    public String getJenisKelas(){
-      return jenisKelas;
-    }
+  public boolean getIsIpa(){
+    return isIpa;
+  }
 
-    public void setJenisKelas(String jenisKelas){
-      this.jenisKelas = jenisKelas;
-    }
-
-    public Guru getEmail() {
-        return guru;
-    }
-
-    public void setEmail(Guru guru) {
-        this.guru = guru;
-    }
-
-    public Siswa getSiswa() {
-        return siswa;
-    }
-
-    public void setSiswa(Siswa siswa) {
-        this.siswa = siswa;
-    }
-    
+  public Guru getGuru(){
+    return guru; 
+  }
 }

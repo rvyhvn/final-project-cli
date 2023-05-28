@@ -7,12 +7,12 @@ public class MataPelajaran {
   
   private int id;
   private String namaMapel;
-  private Kelas jenisKelas;
+  private Kelas kelas;
 
-  public MataPelajaran(int id, String namaMapel, Kelas jenisKelas) {
+  public MataPelajaran(int id, String namaMapel, Kelas kelas) {
     this.id = id;
     this.namaMapel = namaMapel;
-    this.jenisKelas = jenisKelas;
+    this.kelas = kelas;
   }
 
   public int getId(){
@@ -31,7 +31,7 @@ public class MataPelajaran {
     this.namaMapel = namaMapel;
   }
 
-  public Kelas getJenisKelas(){
-    return jenisKelas;
+  public Kelas getKelas(){
+    return kelas;
   }
 }
