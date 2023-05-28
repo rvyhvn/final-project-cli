@@ -7,23 +7,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class WaliMurid extends Entity {
-    private int id;
+    private int idWali;
     private ArrayList<Siswa> anak;
 
-    public WaliMurid(int id, String nama, String email, String phone, ArrayList<Siswa> anak) {
+    public WaliMurid(int idWali, String nama, String email, String phone, ArrayList<Siswa> anak) {
       super(nama, email, phone);
-      this.id = id;
+      this.idWali = idWali;
       this.anak = anak;
     }
 
     // Getter dan setter
 
-    public int getId() {
-      return id;
+    public int getIdWali() {
+      return idWali;
     }
 
-    public void setId(int id) {
-      this.id = id;
+    public void setIdWali(int id) {
+      this.idWali = id;
     }
 
     public ArrayList<Siswa> getAnak(){

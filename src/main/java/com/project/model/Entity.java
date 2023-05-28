@@ -5,9 +5,9 @@ package com.project.model;
  */
 public class Entity {
 
-  private String nama;
-  private String email;
-  private String phone;
+  public String nama;
+  public String email;
+  public String phone;
 
   public Entity(String nama, String email, String phone) {
     this.nama = nama;
