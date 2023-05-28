@@ -1,18 +1,30 @@
 package com.project.model;
 
+import java.util.ArrayList;
+
 /**
  * Nilai
  */
 public class Nilai {
 
+  private int idNilai;
   private double nilai;
-  private MataPelajaran mataPelajaran;
-  private Siswa siswa;
+  private double nilaiMean;
+  private ArrayList<Siswa> siswa;
 
-  public Nilai(double nilai, MataPelajaran mataPelajaran, Siswa siswa) {
+  public Nilai(int idNilai, double nilai, double nilaiMean, ArrayList<Siswa> siswa) {
+    this.idNilai = idNilai;
     this.nilai = nilai;
-    this.mataPelajaran = mataPelajaran;
+    this.nilaiMean = nilaiMean;
     this.siswa = siswa;
+  }
+
+  public int getIdNilai(){
+    return idNilai;
+  }
+
+  public void setIdNilai(int idNilai){
+    this.idNilai = idNilai;
   }
 
   public double getNilai(){
@@ -23,11 +35,19 @@ public class Nilai {
     this.nilai = nilai;
   }
 
-  public MataPelajaran getMataPelajaran(){
-    return mataPelajaran;
+  public double getNilaiMean(){
+    return nilaiMean;
   }
 
-  public Siswa getSiswa(){
+  public void setNilaiMean(double nilaiMean){
+    this.nilaiMean = nilaiMean;
+  }
+
+  public ArrayList<Siswa> getSiswa(){
     return siswa;
+  }
+
+  public void setSiswa(ArrayList<Siswa> siswa){
+    this.siswa = siswa;
   }
 }

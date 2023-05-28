@@ -1,26 +1,28 @@
 package com.project.model;
 
+import java.util.ArrayList;
+
 /**
  * MataPelajaran
  */
 public class MataPelajaran {
   
-  private int id;
+  private int idMapel;
   private String namaMapel;
-  private Kelas kelas;
+  private ArrayList<Kelas> kelas;
 
-  public MataPelajaran(int id, String namaMapel, Kelas kelas) {
-    this.id = id;
+  public MataPelajaran(int id, String namaMapel, ArrayList<Kelas> kelas) {
+    this.idMapel = idMapel;
     this.namaMapel = namaMapel;
     this.kelas = kelas;
   }
 
-  public int getId(){
-    return id;
+  public int getIdMapel(){
+    return idMapel;
   }
 
-  public void setId(int id){
-    this.id = id;
+  public void setIdMapel(int idMapel){
+    this.idMapel = idMapel;
   }
 
   public String getNamaMapel(){
@@ -31,7 +33,11 @@ public class MataPelajaran {
     this.namaMapel = namaMapel;
   }
 
-  public Kelas getKelas(){
+  public ArrayList<Kelas> getKelas(){
     return kelas;
+  }
+
+  public void setKelas(ArrayList<Kelas> kelas){
+    this.kelas = kelas;
   }
 }
