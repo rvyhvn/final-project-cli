@@ -4,18 +4,18 @@ import com.project.model.*;
 import java.sql.*;
 import java.util.Scanner;
 
-public class GuardianController {
+public class WaliMuridController {
     private static Scanner scanner = new Scanner(System.in);
     private Connection connection;
 
-    public GuardianController(Connection connection) {
+    public WaliMuridController(Connection connection) {
       this.connection = connection;
     }
 
     public void displayMenu(Connection connection) {
         try {
             while (true) {
-                System.out.println("Menu Guardian:");
+                System.out.println("Menu WaliMurid:");
                 System.out.println("1. Lihat Daftar Wali Murid");
                 System.out.println("2. Tambah Data Wali");
                 System.out.println("3. Ubah Data Wali");
@@ -86,12 +86,12 @@ public class GuardianController {
         System.out.print("Nomor Telepon: ");
         String telepon = scanner.nextLine();
 
-        Guardian wali = new Guardian();
+        WaliMurid wali = new WaliMurid();
         wali.setNama(nama);
         wali.setEmail(email);
         wali.setPhone(telepon);
 
-        wali.tambahGuardian(connection);
+        wali.tambahWaliMurid(connection);
 
         System.out.println("Data wali murid berhasil ditambahkan.");
     }
@@ -102,7 +102,7 @@ public class GuardianController {
         System.out.print("ID Wali Murid yang akan diubah: ");
         int id = scanner.nextInt();
 
-        Guardian wali = Guardian.getGuardianById(connection, id);
+        WaliMurid wali = WaliMurid.getWaliMuridById(connection, id);
 
         if (wali == null) {
             System.out.println("Data wali murid dengan ID tersebut tidak ditemukan.");
@@ -137,7 +137,7 @@ public class GuardianController {
             wali.setPhone(telepon);
         }
 
-        wali.updateGuardian(connection);
+        wali.updateWaliMurid(connection);
 
         System.out.println("Data wali murid berhasil diubah.");
     }
@@ -146,14 +146,14 @@ public class GuardianController {
         System.out.print("ID Wali Murid yang akan dihapus: ");
         int id = scanner.nextInt();
 
-        Guardian wali = Guardian.getGuardianById(connection, id);
+        WaliMurid wali = WaliMurid.getWaliMuridById(connection, id);
 
         if (wali == null) {
             System.out.println("Data wali murid dengan ID tersebut tidak ditemukan.");
             return;
         }
 
-        wali.hapusGuardian(connection);
+        wali.hapusWaliMurid(connection);
 
         System.out.println("Data wali murid berhasil dihapus.");
     }
