@@ -1,34 +1,19 @@
 package com.project.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Email {
-    private String from;
-    private String to;
     private String subject;
-    private String content;
+    private String body;
+    private List<String> recipients;
+    private String attachmentPath;
 
-    public Email(String from, String to, String subject, String content) {
-        this.from = from;
-        this.to = to;
+    public Email(String subject, String body, List<String> recipients, String attachmentPath) {
         this.subject = subject;
-        this.content = content;
-    }
-
-    // Getters and Setters
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
+        this.body = body;
+        this.recipients = recipients;
+        this.attachmentPath = attachmentPath;
     }
 
     public String getSubject() {
@@ -39,18 +24,27 @@ public class Email {
         this.subject = subject;
     }
 
-    public String getContent() {
-        return content;
+    public String getBody() {
+        return body;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setBody(String body) {
+        this.body = body;
     }
-    
-    // Method to send the email
-    public void send() {
-        // Code to send the email
-        // You can use JavaMail or any other email library to implement this functionality
-        // Implement the logic to send the email using the provided "from", "to", "subject", and "content" fields
+
+    public List<String> getRecipients() {
+        return recipients;
+    }
+
+    public void setRecipients(List<String> recipients) {
+        this.recipients = recipients;
+    }
+
+    public String getAttachmentPath() {
+        return attachmentPath;
+    }
+
+    public void setAttachmentPath(String attachmentPath) {
+        this.attachmentPath = attachmentPath;
     }
 }
