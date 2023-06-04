@@ -10,13 +10,13 @@ public class Nilai {
   private int idNilai;
   private double nilai;
   private double nilaiMean;
-  private ArrayList<Siswa> siswa;
+  private ArrayList<Siswa> siswaList;
 
-  public Nilai(int idNilai, double nilai, double nilaiMean, ArrayList<Siswa> siswa) {
+  public Nilai(int idNilai, double nilai, double nilaiMean) {
     this.idNilai = idNilai;
     this.nilai = nilai;
     this.nilaiMean = nilaiMean;
-    this.siswa = siswa;
+    this.siswaList = new ArrayList<>();
   }
 
   public int getIdNilai(){
@@ -43,11 +43,20 @@ public class Nilai {
     this.nilaiMean = nilaiMean;
   }
 
-  public ArrayList<Siswa> getSiswa(){
-    return siswa;
+  public ArrayList<Siswa> getSiswaList(){
+    return siswaList;
   }
 
-  public void setSiswa(ArrayList<Siswa> siswa){
-    this.siswa = siswa;
+  public void setSiswaList(ArrayList<Siswa> siswaList){
+    this.siswaList = siswaList;
   }
+  
+  public void addSiswa(Siswa siswa){
+    siswaList.add(siswa);
+  }
+
+  public void removeSiswa(Siswa siswa){
+    siswaList.remove(siswa);
+  }
+
 }

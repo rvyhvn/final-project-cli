@@ -43,6 +43,18 @@ public class Kelas {
     return isIpa;
   }
 
+  public String getNamaKelas(){
+    String namaKelas = tingkat + " ";
+    if (isIpa) {
+      namaKelas += "IPA";
+    } else {
+      namaKelas += "IPS";
+    }
+    namaKelas += urutan;
+
+    return namaKelas;
+  }
+
   public ArrayList<Guru> getGuru(){
     return guru; 
   }

@@ -50,6 +50,29 @@ public class KelasDAO {
         return kelasList;
     }
 
+    public List<Kelas> getKelasByMapelId(int idMapel){
+      String query = "SELECT k.* FROM k JOIN kelas_mapel km ON k.id_kelas = km.id_kelas WHERE km.id_mapel = ?";
+      List<Kelas> kelasList = new ArrayList<>();
+
+      try (PreparedStatement statement = connection.prepareStatement(query)) {
+        statement.setInt(1, idMapel);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+          int idKelas = resultSet.getInt("id_kelas");
+          String tingkat = resultSet.getString("tingkat");
+          int urutan = resultSet.getInt("urutan");
+          boolean isIpa = resultSet.getBoolean("is_ipa");
+          Kelas kelas = new Kelas(idKelas, tingkat, urutan, isIpa, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+          kelasList.add(kelas);
+        }
+      } catch (SQLException e){
+        e.printStackTrace();
+      }
+
+      return kelasList;
+    }
+
     public Kelas getKelasById(int idKelas) {
         String query = "SELECT * FROM kelas WHERE id_kelas = ?";
         Kelas kelas = null;
