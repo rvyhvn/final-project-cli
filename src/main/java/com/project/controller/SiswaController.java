@@ -1,38 +1,36 @@
 package com.project.controller;
 
+import com.project.dao.SiswaDAO;
+import com.project.model.Kelas;
+import com.project.model.Nilai;
 import com.project.model.Siswa;
+import com.project.model.WaliMurid;
+
 import java.sql.Connection;
-import java.sql.ResultSet;
+import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 
 public class SiswaController {
-    private Connection connection;
+    private SiswaDAO siswaDAO;
 
-    public SiswaController(Connection connection) {
-        this.connection = connection;
+    public SiswaController() {
+        try {
+            String url = "jdbc:postgresql://localhost:5432/final";
+            String username = "your-username";
+            String password = "your-password";
+            Connection connection = DriverManager.getConnection(url, username, password);
+            siswaDAO = new SiswaDAO(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void lihatDaftarSiswa() throws SQLException {
-        String query = "SELECT * FROM siswa ORDER BY id ASC";
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
+    public void saveSiswa(Siswa siswa) {
+        siswaDAO.addSiswa(siswa);
+    }
 
-        System.out.println("Daftar Siswa:");
-        System.out.println("ID\tNama\t\t\tKelas\t\t\tEmail\t\t\tWali Murid ID\t\t\tNilai Mean ID");
-
-        while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            String nama = resultSet.getString("nama");
-            String kelas = resultSet.getString("kelas");
-            String email = resultSet.getString("email");
-            int waliMuridId = resultSet.getInt("wali_murid_id");
-            int nilaiMeanId = resultSet.getInt("nilai_mean_id");
-
-            System.out.println(id + "\t" + nama + "\t\t" + kelas + "\t\t" + email + "\t\t" + waliMuridId + "\t\t\t" + nilaiMeanId);
-        }
-
-        resultSet.close();
-        statement.close();
+    public List<Siswa> getAllSiswa() {
+        return siswaDAO.getAllSiswa();
     }
 }

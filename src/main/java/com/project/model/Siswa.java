@@ -38,7 +38,10 @@ public class Siswa extends Entity {
   public Nilai getNilaiMean() {
     return nilaiMean;
   }
-
+  
+  public void setIdSiswa(int idSiswa) {
+    this.idSiswa = idSiswa;
+  }
   public void setKelas(Kelas kelas) {
     this.kelas = kelas;
   }
@@ -51,50 +54,6 @@ public class Siswa extends Entity {
     this.nilaiMean = nilaiMean;
   }
 
-  // CRUD
+} 
   
-  public static Siswa getSiswaById(Connection connection, int id) throws SQLException {
-    String query = "SELECT * FROM siswa WHERE id = ?";
 
-    PreparedStatement preparedStatement = connection.prepareStatement(query);
-    preparedStatement.setInt(1, id);
-
-    ResultSet resultSet = preparedStatement.executeQuery();
-
-    if (resultSet.next()) {
-      int idSiswa = resultSet.getInt("id");
-      String nama = resultSet.getString("nama");
-      String email = resultSet.getString("email");
-      String phone = resultSet.getString("phone");
-
-      WaliMurid waliMurid = new WaliMurid(
-        resultSet.getInt("id_wali"),
-        resultSet.getString("nama"),
-        resultSet.getString("phone"),
-        resultSet.getString("email"),
-        new ArrayList<Siswa>()
-        );
-      
-      Nilai nilaiMean = new Nilai(
-        resultSet.getInt("id_nilai"),
-        resultSet.getDouble("nilai"),
-        resultSet.getDouble("nilai_mean"),
-        new ArrayList<Siswa>()
-        );
-
-      Kelas kelas = new Kelas(
-        resultSet.getInt("id_kelas"),
-        resultSet.getString("tingkat"),
-        resultSet.getInt("urutan"),
-        resultSet.getBoolean("is_ipa"),
-        new ArrayList<Guru>(),
-        new ArrayList<Siswa>(),
-        new ArrayList<MataPelajaran>()
-      );
-
-      return new Siswa(idSiswa, nama, kelas, email, phone, waliMurid, nilaiMean);
-    } else {
-      return null;
-    }
-  }
-}
