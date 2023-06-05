@@ -2,7 +2,8 @@ package com.project.model;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-
+import com.project.model.Kelas;
+import com.project.model.Laporan;
 /**
  * Guru
  */
@@ -17,6 +18,13 @@ public class Guru extends Entity {
     this.idGuru = idGuru;
     this.kelas = kelas;
     this.laporan = laporan;
+  }
+
+  public Guru() {
+    super("", "", "");
+    this.idGuru = 0;
+    this.kelas = new ArrayList<>();
+    this.laporan = new ArrayList<>();
   }
 
   public int getIdGuru(){
