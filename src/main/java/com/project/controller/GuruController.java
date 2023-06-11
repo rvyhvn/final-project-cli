@@ -9,8 +9,10 @@ import java.util.List;
 public class GuruController {
 
     private GuruDAO guruDAO;
+    private Connection connection;
 
     public GuruController(Connection connection) {
+        this.connection = connection;
         guruDAO = new GuruDAO(connection);
     }
 

@@ -2,13 +2,13 @@ package com.project.controller;
 
 import com.project.dao.LoginDAO;
 import com.project.model.Guru;
+import com.project.util.DatabaseUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class LoginController {
@@ -17,15 +17,11 @@ public class LoginController {
     @FXML
     private PasswordField passwordField;
 
-    private final String DB_URL = "jdbc:postgresql://localhost:5432/your_database";
-    private final String DB_USERNAME = "your_username";
-    private final String DB_PASSWORD = "your_password";
-
     public void login() {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD)) {
+        try (Connection connection = DatabaseUtil.getConnection()) {
             LoginDAO loginDAO = new LoginDAO(connection);
             Guru guru = loginDAO.login(email, password);
             if (guru != null) {

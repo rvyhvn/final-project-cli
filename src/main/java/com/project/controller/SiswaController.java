@@ -5,9 +5,9 @@ import com.project.model.Kelas;
 import com.project.model.Nilai;
 import com.project.model.Siswa;
 import com.project.model.WaliMurid;
+import com.project.util.DatabaseUtil;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,10 +16,7 @@ public class SiswaController {
 
     public SiswaController() {
         try {
-            String url = "jdbc:postgresql://localhost:5432/final";
-            String username = "your-username";
-            String password = "your-password";
-            Connection connection = DriverManager.getConnection(url, username, password);
+            Connection connection = DatabaseUtil.getConnection();
             siswaDAO = new SiswaDAO(connection);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -2,7 +2,8 @@ package com.project.controller;
 
 import com.project.dao.WaliMuridDAO;
 import com.project.model.WaliMurid;
-
+import com.project.util.DatabaseUtil;
+import java.sql.*;
 import java.sql.Connection;
 import java.util.List;
 
@@ -10,8 +11,13 @@ public class WaliMuridController {
 
     private WaliMuridDAO waliMuridDAO;
 
-    public WaliMuridController(Connection connection) {
-        this.waliMuridDAO = new WaliMuridDAO(connection);
+    public WaliMuridController() {
+        try {
+            Connection connection = DatabaseUtil.getConnection();
+            this.waliMuridDAO = new WaliMuridDAO(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addWaliMurid(int idWali, String nama, String email, String phone) {

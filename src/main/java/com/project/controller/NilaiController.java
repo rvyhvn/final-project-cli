@@ -3,9 +3,9 @@ package com.project.controller;
 import com.project.dao.NilaiDAO;
 import com.project.model.Nilai;
 import com.project.model.Siswa;
+import com.project.util.DatabaseUtil;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,10 +14,7 @@ public class NilaiController {
 
     public NilaiController() {
         try {
-            String url = "jdbc:postgresql://localhost:5432/final";
-            String username = "your-username";
-            String password = "your-password";
-            Connection connection = DriverManager.getConnection(url, username, password);
+            Connection connection = DatabaseUtil.getConnection();
             nilaiDAO = new NilaiDAO(connection);
         } catch (SQLException e) {
             e.printStackTrace();
