@@ -2,18 +2,23 @@ package com.project.controller;
 
 import com.project.dao.GuruDAO;
 import com.project.model.Guru;
+import com.project.util.DatabaseUtil;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class GuruController {
-
     private GuruDAO guruDAO;
     private Connection connection;
 
-    public GuruController(Connection connection) {
-        this.connection = connection;
-        guruDAO = new GuruDAO(connection);
+    public GuruController() {
+        try {
+            connection = DatabaseUtil.getConnection();
+            guruDAO = new GuruDAO(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addGuru(String nama, String phone, String email) {
@@ -54,6 +59,16 @@ public class GuruController {
                 System.out.println("Phone: " + guru.getPhone());
                 System.out.println("--------------------");
             }
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
