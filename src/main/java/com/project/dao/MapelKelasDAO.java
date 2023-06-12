@@ -1,3 +1,5 @@
+package com.project.dao;
+
 import com.project.model.MapelKelas;
 import com.project.model.MataPelajaran;
 import com.project.model.Kelas;
@@ -26,7 +28,7 @@ public class MapelKelasDAO {
         }
     }
 
-    public List<MapelKelas> getByKelasId(int kelasId) throws SQLException {
+    public List<MapelKelas> getMapelKelasByKelasId(int kelasId) throws SQLException {
         List<MapelKelas> mapelKelasList = new ArrayList<>();
         String query = "SELECT id_mapel_kelas, mapel_id, kelas_id FROM mapel_kelas WHERE kelas_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -35,25 +37,6 @@ public class MapelKelasDAO {
                 while (resultSet.next()) {
                     int idMapelKelas = resultSet.getInt("id_mapel_kelas");
                     int mapelId = resultSet.getInt("mapel_id");
-                    MataPelajaran mapel = getMataPelajaranById(mapelId);
-                    Kelas kelas = getKelasById(kelasId);
-                    MapelKelas mapelKelas = new MapelKelas(idMapelKelas, mapel, kelas);
-                    mapelKelasList.add(mapelKelas);
-                }
-            }
-        }
-        return mapelKelasList;
-    }
-
-    public List<MapelKelas> getByMapelId(int mapelId) throws SQLException {
-        List<MapelKelas> mapelKelasList = new ArrayList<>();
-        String query = "SELECT id_mapel_kelas, mapel_id, kelas_id FROM mapel_kelas WHERE mapel_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, mapelId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    int idMapelKelas = resultSet.getInt("id_mapel_kelas");
-                    int kelasId = resultSet.getInt("kelas_id");
                     MataPelajaran mapel = getMataPelajaranById(mapelId);
                     Kelas kelas = getKelasById(kelasId);
                     MapelKelas mapelKelas = new MapelKelas(idMapelKelas, mapel, kelas);
@@ -73,7 +56,7 @@ public class MapelKelasDAO {
     }
 
     private MataPelajaran getMataPelajaranById(int mapelId) throws SQLException {
-        // Implementasi metode untuk mendapatkan objek MataPelajaran berdasarkan mapelId
+        // Implementasikan metode untuk mendapatkan objek MataPelajaran berdasarkan mapelId
         // Anda dapat menggunakan koneksi database untuk melakukan query atau mengakses data dari sumber lain
         // Contoh implementasi:
         // String query = "SELECT mapel_id, mapel_name FROM mata_pelajaran WHERE mapel_id = ?";
@@ -91,7 +74,7 @@ public class MapelKelasDAO {
     }
 
     private Kelas getKelasById(int kelasId) throws SQLException {
-        // Implementasi metode untuk mendapatkan objek Kelas berdasarkan kelasId
+        // Implementasikan metode untuk mendapatkan objek Kelas berdasarkan kelasId
         // Anda dapat menggunakan koneksi database untuk melakukan query atau mengakses data dari sumber lain
         // Contoh implementasi:
         // String query = "SELECT kelas_id, kelas_name FROM kelas WHERE kelas_id = ?";
