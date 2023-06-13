@@ -47,14 +47,16 @@ public class MataPelajaranDAO {
         return mataPelajaranList;
     }
 
+
     private MataPelajaran mapResultSetToMataPelajaran(ResultSet resultSet) throws SQLException {
         int idMapel = resultSet.getInt("id_mapel");
         String namaMapel = resultSet.getString("nama_mapel");
 
         // Dapatkan daftar Kelas untuk MataPelajaran dengan menggunakan DAO yang sesuai
         KelasDAO kelasDAO = new KelasDAO(connection);
-        ArrayList<Kelas> kelasList = kelasDAO.getKelasByMapelId(idMapel);
+        List<Kelas> kelasList = kelasDAO.getKelasByMapelId(idMapel);
 
-        return new MataPelajaran(idMapel, namaMapel, kelasList);
+        return new MataPelajaran(idMapel, namaMapel, new ArrayList<Kelas>());
     }
+
 }
