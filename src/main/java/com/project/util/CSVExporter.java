@@ -2,6 +2,8 @@ package com.project.util;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class CSVExporter {
@@ -30,5 +32,10 @@ public class CSVExporter {
             cellData = "\"" + cellData + "\"";
         }
         return cellData;
+    }
+
+    public static String formatDate(Date date, String format) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        return dateFormat.format(date);
     }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 
 public class SiswaController {
     private SiswaDAO siswaDAO;
+    private Connection connection;
 
     public SiswaController() {
         try {
