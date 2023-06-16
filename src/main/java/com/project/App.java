@@ -2,10 +2,13 @@ package com.project;
 
 import com.project.model.*;
 import com.project.controller.*;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class App {
@@ -21,6 +24,27 @@ public class App {
 
     // Membuat objek Siswa
     Siswa siswa = new Siswa(1, "John Smith", kelas10, "john.smith@example.com", "987654321", waliMurid1, nilaiMean1);
+
+    // Membuat objek Guru
+    Guru guru = new Guru(1, "Jane Doe", "jane@gmail.com", "0812345678", null, null);
+
+    // Membuat objek Nilai
+    Nilai nilai = new Nilai(1, 90.0, 80.0);
+    
+    // Membuat objek Laporan
+    int idLaporan = 1;
+    Date tanggal = new Date();
+    Laporan laporan = new Laporan(idLaporan, tanggal, kelas10, siswa, guru, nilai);
+
+    // Ekspor ke CSV
+    String filePath = "output.csv";
+    try {
+        laporan.exportToCSV(filePath);
+        System.out.println("Laporan berhasil diekspor ke " + filePath);
+    } catch (IOException e) {
+        System.out.println("Terjadi kesalahan saat mencoba mengekspor laporan: " + e.getMessage());
+    }
+
 
     int idSiswa = siswa.getIdSiswa();
     Kelas kelasSiswa = siswa.getKelas();

@@ -1,10 +1,10 @@
 package com.project.model;
 
 import java.util.Date;
-
-/**
- * Laporan
- */
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Laporan {
 
@@ -63,5 +63,21 @@ public class Laporan {
   public void setNilai(Nilai nilai){
     this.nilai = nilai;
   }
-}
 
+  public void exportToCSV(String filePath) throws IOException {
+    try (CSVPrinter csvPrinter = new CSVPrinter(new FileWriter(filePath), CSVFormat.DEFAULT)) {
+      csvPrinter.printRecord("idLaporan", "tanggal", "idKelas", "namaKelas", "idSiswa", "idGuru", "idNilai", "nilai");
+
+      csvPrinter.printRecord(
+              getIdLaporan(),
+              getTanggal(),
+              getKelas().getIdKelas(),
+              getKelas().getNamaKelas(),
+              getSiswa().getIdSiswa(),
+              getGuru().getIdGuru(),
+              getNilai().getIdNilai(),
+              getNilai().getNilai()
+      );
+    }
+  }
+}
