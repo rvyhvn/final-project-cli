@@ -57,11 +57,11 @@ public class SiswaDAO {
     private Siswa mapResultSetToSiswa(ResultSet resultSet) throws SQLException {
         int idSiswa = resultSet.getInt("id_siswa");
         String nama = resultSet.getString("nama");
-        int idKelas = resultSet.getInt("id_kelas");
+        int idKelas = resultSet.getInt("kelas_id");
         String email = resultSet.getString("email");
         String phone = resultSet.getString("phone");
-        int idWali = resultSet.getInt("id_wali");
-        int idNilai = resultSet.getInt("id_nilai");
+        int idWali = resultSet.getInt("wali_id");
+        int idNilai = resultSet.getInt("nilai_id");
 
         // Dapatkan objek Kelas, WaliMurid, dan Nilai dengan menggunakan DAO yang sesuai
 

@@ -13,15 +13,9 @@ import java.util.List;
 
 public class SiswaController {
     private SiswaDAO siswaDAO;
-    private Connection connection;
 
-    public SiswaController() {
-        try {
-            Connection connection = DatabaseUtil.getConnection();
-            siswaDAO = new SiswaDAO(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public SiswaController(Connection connection){
+      this.siswaDAO = new SiswaDAO(connection);
     }
 
     public void saveSiswa(Siswa siswa) {
