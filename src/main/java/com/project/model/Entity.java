@@ -3,7 +3,7 @@ package com.project.model;
 /**
  * Entity
  */
-public class Entity {
+public abstract class Entity {
 
   public String nama;
   public String email;
