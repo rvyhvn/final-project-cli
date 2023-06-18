@@ -10,10 +10,10 @@ import com.project.model.Laporan;
 public class Guru extends Entity {
 
   private int idGuru;
-  private ArrayList<Kelas> kelas;
-  private ArrayList<Laporan> laporan;
+  private Kelas kelas;
+  private Laporan laporan;
 
-  public Guru(int idGuru, String nama, String email, String phone, ArrayList<Kelas> kelas, ArrayList<Laporan> laporan) {
+  public Guru(int idGuru, String nama, String email, String phone, Kelas kelas, Laporan laporan) {
     super(nama, email, phone);
     this.idGuru = idGuru;
     this.kelas = kelas;
@@ -23,8 +23,8 @@ public class Guru extends Entity {
   public Guru() {
     super("", "", "");
     this.idGuru = 0;
-    this.kelas = new ArrayList<>();
-    this.laporan = new ArrayList<>();
+    this.kelas = kelas;
+    this.laporan = laporan;
   }
 
   public int getIdGuru(){
@@ -35,19 +35,19 @@ public class Guru extends Entity {
     this.idGuru = idGuru;
   }
 
-  public ArrayList<Kelas> getKelas(){
+  public Kelas getKelas(){
     return kelas;
   }
 
-  public void setKelas(ArrayList<Kelas> kelas){
+  public void setKelas(Kelas kelas){
     this.kelas = kelas;
   }
 
-  public ArrayList<Laporan> getLaporan(){
+  public Laporan getLaporan(){
     return laporan;
   }
 
-  public void setLaporan(ArrayList<Laporan> laporan){
+  public void setLaporan(Laporan laporan){
     this.laporan = laporan;
   }
 }

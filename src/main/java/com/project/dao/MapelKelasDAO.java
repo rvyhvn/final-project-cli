@@ -3,91 +3,181 @@ package com.project.dao;
 import com.project.model.MapelKelas;
 import com.project.model.MataPelajaran;
 import com.project.model.Kelas;
+import com.project.util.DatabaseUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MapelKelasDAO {
     private Connection connection;
 
+    // Constructor
     public MapelKelasDAO(Connection connection) {
         this.connection = connection;
     }
 
-    public void create(MapelKelas mapelKelas) throws SQLException {
-        String query = "INSERT INTO mapel_kelas (id_mapel_kelas, mapel_id, kelas_id) VALUES (?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, mapelKelas.getIdMapelKelas());
-            statement.setInt(2, mapelKelas.getMapel().getIdMapel());
-            statement.setInt(3, mapelKelas.getKelas().getIdKelas());
-            statement.executeUpdate();
-        }
-    }
-
-    public List<MapelKelas> getMapelKelasByKelasId(int kelasId) throws SQLException {
+    public List<MapelKelas> getAllMapelKelas() throws SQLException {
         List<MapelKelas> mapelKelasList = new ArrayList<>();
-        String query = "SELECT id_mapel_kelas, mapel_id, kelas_id FROM mapel_kelas WHERE kelas_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, kelasId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    int idMapelKelas = resultSet.getInt("id_mapel_kelas");
-                    int mapelId = resultSet.getInt("mapel_id");
-                    MataPelajaran mapel = getMataPelajaranById(mapelId);
-                    Kelas kelas = getKelasById(kelasId);
-                    MapelKelas mapelKelas = new MapelKelas(idMapelKelas, mapel, kelas);
-                    mapelKelasList.add(mapelKelas);
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT mk.id_mapelkelas, mk.mapel_id, m.nama_mapel, k.id_kelas, k.tingkat, k.urutan, k.is_ipa FROM mapelkelas mk LEFT JOIN mapel m ON mk.mapel_id = m.id_mapel LEFT JOIN kelas k ON mk.kelas_id = k.id_kelas;");
+            while (resultSet.next()) {
+                MapelKelas mapelKelas = new MapelKelas();
+                mapelKelas.setIdMapelKelas(resultSet.getInt("id_mapelkelas"));
+
+                MataPelajaran mataPelajaran = new MataPelajaran();
+                mataPelajaran.setIdMapel(resultSet.getInt("mapel_id"));
+                mataPelajaran.setNamaMapel(resultSet.getString("nama_mapel"));
+
+                Kelas kelas = new Kelas();
+                kelas.setIdKelas(resultSet.getInt("id_kelas"));
+                kelas.setTingkat(resultSet.getString("tingkat"));
+                kelas.setUrutan(resultSet.getInt("urutan"));
+                kelas.setIsIpa(resultSet.getBoolean("is_ipa"));
+
+                ArrayList<Kelas> kelasList = new ArrayList<>();
+                kelasList.add(kelas);
+                mataPelajaran.setKelas(kelasList);
+
+                mapelKelas.setMapel(mataPelajaran);
+
+                mapelKelasList.add(mapelKelas);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            DatabaseUtil.closeConnection(connection);
         }
         return mapelKelasList;
     }
 
-    public void delete(MapelKelas mapelKelas) throws SQLException {
-        String query = "DELETE FROM mapel_kelas WHERE id_mapel_kelas = ?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, mapelKelas.getIdMapelKelas());
+    public MapelKelas getMapelKelasById(int idMapelKelas) throws SQLException {
+        MapelKelas mapelKelas = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement("SELECT mk.id_mapelkelas, mk.mapel_id, m.nama_mapel, k.id_kelas, k.tingkat, k.urutan, k.is_ipa FROM mapelkelas mk LEFT JOIN mapel m ON mk.mapel_id = m.id_mapel LEFT JOIN kelas k ON mk.kelas_id = k.id_kelas WHERE mk.id_mapelkelas = ?;");
+            statement.setInt(1, idMapelKelas);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                mapelKelas = new MapelKelas();
+                mapelKelas.setIdMapelKelas(resultSet.getInt("id_mapelkelas"));
+
+                MataPelajaran mataPelajaran = new MataPelajaran();
+                mataPelajaran.setIdMapel(resultSet.getInt("mapel_id"));
+                mataPelajaran.setNamaMapel(resultSet.getString("nama_mapel"));
+
+                Kelas kelas = new Kelas();
+                kelas.setIdKelas(resultSet.getInt("id_kelas"));
+                kelas.setTingkat(resultSet.getString("tingkat"));
+                kelas.setUrutan(resultSet.getInt("urutan"));
+                kelas.setIsIpa(resultSet.getBoolean("is_ipa"));
+
+                ArrayList<Kelas> kelasList = new ArrayList<>();
+                kelasList.add(kelas);
+                mataPelajaran.setKelas(kelasList);
+
+                mapelKelas.setMapel(mataPelajaran);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            DatabaseUtil.closeConnection(connection);
+        }
+        return mapelKelas;
+    }
+
+    public void addMapelKelas(MapelKelas mapelKelas) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("INSERT INTO mapelkelas (kelas_id, mapel_id) VALUES (?, ?);");
+            statement.setInt(1, mapelKelas.getMapel().getKelas().get(0).getIdKelas());
+            statement.setInt(2, mapelKelas.getMapel().getIdMapel());
             statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            DatabaseUtil.closeConnection(connection);
         }
     }
 
-    private MataPelajaran getMataPelajaranById(int mapelId) throws SQLException {
-        // Implementasikan metode untuk mendapatkan objek MataPelajaran berdasarkan mapelId
-        // Anda dapat menggunakan koneksi database untuk melakukan query atau mengakses data dari sumber lain
-        // Contoh implementasi:
-        // String query = "SELECT mapel_id, mapel_name FROM mata_pelajaran WHERE mapel_id = ?";
-        // try (PreparedStatement statement = connection.prepareStatement(query)) {
-        //     statement.setInt(1, mapelId);
-        //     try (ResultSet resultSet = statement.executeQuery()) {
-        //         if (resultSet.next()) {
-        //             String mapelName = resultSet.getString("mapel_name");
-        //             return new MataPelajaran(mapelId, mapelName);
-        //         }
-        //     }
-        // }
-        // return null;
-        return null;
+    public void updateMapelKelas(MapelKelas mapelKelas) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("UPDATE mapelkelas SET kelas_id = ?, mapel_id = ? WHERE id_mapelkelas = ?;");
+            statement.setInt(1, mapelKelas.getMapel().getKelas().get(0).getIdKelas());
+            statement.setInt(2, mapelKelas.getMapel().getIdMapel());
+            statement.setInt(3, mapelKelas.getIdMapelKelas());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            DatabaseUtil.closeConnection(connection);
+        }
     }
 
-    private Kelas getKelasById(int kelasId) throws SQLException {
-        // Implementasikan metode untuk mendapatkan objek Kelas berdasarkan kelasId
-        // Anda dapat menggunakan koneksi database untuk melakukan query atau mengakses data dari sumber lain
-        // Contoh implementasi:
-        // String query = "SELECT kelas_id, kelas_name FROM kelas WHERE kelas_id = ?";
-        // try (PreparedStatement statement = connection.prepareStatement(query)) {
-        //     statement.setInt(1, kelasId);
-        //     try (ResultSet resultSet = statement.executeQuery()) {
-        //         if (resultSet.next()) {
-        //             String kelasName = resultSet.getString("kelas_name");
-        //             return new Kelas(kelasId, kelasName);
-        //         }
-        //     }
-        // }
-        // return null;
-        return null;
+    public void deleteMapelKelas(int idMapelKelas) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("DELETE FROM mapelkelas WHERE id_mapelkelas = ?;");
+            statement.setInt(1, idMapelKelas);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            DatabaseUtil.closeConnection(connection);
+        }
     }
 }

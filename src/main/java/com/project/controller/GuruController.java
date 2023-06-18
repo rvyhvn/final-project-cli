@@ -1,74 +1,61 @@
 package com.project.controller;
 
-import com.project.dao.GuruDAO;
-import com.project.model.Guru;
-import com.project.util.DatabaseUtil;
-
-import java.sql.Connection;
-import java.sql.SQLException;
+import com.project.dao.*;
+import com.project.model.*;
+import java.sql.*;
 import java.util.List;
 
 public class GuruController {
-    private GuruDAO guruDAO;
-    private Connection connection;
+    
+  private GuruDAO guruDAO;
+  private Connection connection;
 
-    public GuruController() {
-        try {
-            connection = DatabaseUtil.getConnection();
-            guruDAO = new GuruDAO(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+  public GuruController() {
+      guruDAO = new GuruDAO(connection);
+  }
 
-    public void addGuru(String nama, String phone, String email) {
-        Guru guru = new Guru(0, nama, email, phone, null, null);
-        guruDAO.addGuru(guru);
-    }
+  public void tambahGuru(Guru guru) {
+      try {
+          guruDAO.addGuru(guru);
+          System.out.println("Guru berhasil ditambahkan.");
+      } catch (SQLException e) {
+          System.out.println("Gagal menambahkan guru: " + e.getMessage());
+      }
+  }
 
-    public void updateGuru(int idGuru, String nama, String phone, String email) {
-        Guru guru = guruDAO.getGuruById(idGuru);
-        if (guru != null) {
-            guru.setNama(nama);
-            guru.setPhone(phone);
-            guru.setEmail(email);
-            guruDAO.updateGuru(guru);
-        } else {
-            System.out.println("Guru dengan ID " + idGuru + " tidak ditemukan");
-        }
-    }
+  public void updateGuru(Guru guru) {
+      try {
+          guruDAO.updateGuru(guru);
+          System.out.println("Data guru berhasil diperbarui.");
+      } catch (SQLException e) {
+          System.out.println("Gagal memperbarui data guru: " + e.getMessage());
+      }
+  }
 
-    public void deleteGuru(int idGuru) {
-        Guru guru = guruDAO.getGuruById(idGuru);
-        if (guru != null) {
-            guruDAO.deleteGuru(idGuru);
-        } else {
-            System.out.println("Guru dengan ID " + idGuru + " tidak ditemukan");
-        }
-    }
+  public void hapusGuru(int idGuru) {
+      try {
+          guruDAO.deleteGuru(idGuru);
+          System.out.println("Guru berhasil dihapus.");
+      } catch (SQLException e) {
+          System.out.println("Gagal menghapus guru: " + e.getMessage());
+      }
+  }
 
-    public void getAllGuru() {
-        List<Guru> guruList = guruDAO.getAllGuru();
-        if (guruList.isEmpty()) {
-            System.out.println("Tidak ada data guru");
-        } else {
-            for (Guru guru : guruList) {
-                System.out.println("ID Guru: " + guru.getIdGuru());
-                System.out.println("Nama: " + guru.getNama());
-                System.out.println("Email: " + guru.getEmail());
-                System.out.println("Phone: " + guru.getPhone());
-                System.out.println("--------------------");
-            }
-        }
-    }
+  public List<Guru> getDaftarGuru() {
+      try {
+          return guruDAO.getAllGuru();
+      } catch (SQLException e) {
+          System.out.println("Gagal mengambil daftar guru: " + e.getMessage());
+          return null;
+      }
+  }
 
-    public void closeConnection() {
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+  public Guru getGuruById(int idGuru) {
+      try {
+          return guruDAO.getGuruById(idGuru);
+      } catch (SQLException e) {
+          System.out.println("Gagal mengambil data guru: " + e.getMessage());
+          return null;
+      }
+  }
 }
