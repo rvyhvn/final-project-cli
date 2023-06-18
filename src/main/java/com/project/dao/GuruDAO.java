@@ -1,87 +1,188 @@
 package com.project.dao;
 
 import com.project.model.Guru;
+import com.project.util.DatabaseUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuruDAO {
-
     private Connection connection;
 
     public GuruDAO(Connection connection) {
-        this.connection = connection;
-    }
-
-    public void addGuru(Guru guru) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO guru (nama, phone, email) VALUES (?, ?, ?)");
-            statement.setString(1, guru.getNama());
-            statement.setString(2, guru.getPhone());
-            statement.setString(3, guru.getEmail());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void updateGuru(Guru guru) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("UPDATE guru SET nama = ?, phone = ?, email = ? WHERE id_guru = ?");
-            statement.setString(1, guru.getNama());
-            statement.setString(2, guru.getPhone());
-            statement.setString(3, guru.getEmail());
-            statement.setInt(4, guru.getIdGuru());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteGuru(int idGuru) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM guru WHERE id_guru = ?");
-            statement.setInt(1, idGuru);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Guru getGuruById(int idGuru) {
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM guru WHERE id_guru = ?");
-            statement.setInt(1, idGuru);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String nama = resultSet.getString("nama");
-                String phone = resultSet.getString("phone");
-                String email = resultSet.getString("email");
-                return new Guru(idGuru, nama, email, phone, null, null);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+      this.connection = connection;        // Menginisialisasi koneksi ke database
     }
 
     public List<Guru> getAllGuru() {
         List<Guru> guruList = new ArrayList<>();
+        Statement statement = null;
+        ResultSet resultSet = null;
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM guru");
+            // Membuat pernyataan SQL
+            String query = "SELECT * FROM guru";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+
+            // Mengambil hasil query dan membangun objek Guru
             while (resultSet.next()) {
-                int idGuru = resultSet.getInt("id_guru");
-                String nama = resultSet.getString("nama");
-                String phone = resultSet.getString("phone");
-                String email = resultSet.getString("email");
-                Guru guru = new Guru(idGuru, nama, email, phone, null, null);
+                Guru guru = new Guru();
+                guru.setIdGuru(resultSet.getInt("id_guru"));
+                guru.setNama(resultSet.getString("nama"));
+                guru.set(resultSet.getString("mata_pelajaran"));
+                guru.setPhone(resultSet.getString("phone"));
+                guru.setEmail(resultSet.getString("email"));
+
                 guruList.add(guru);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            // Menutup statement dan resultSet
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            // Menutup koneksi ke database
+            DatabaseUtil.closeConnection(connection);
         }
         return guruList;
+    }
+
+    public Guru getGuruById(int id) {
+        Guru guru = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            // Membuat pernyataan SQL dengan parameter
+            String query = "SELECT * FROM guru WHERE id = ?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+
+            // Mengambil hasil query dan membangun objek Guru
+            if (resultSet.next()) {
+                guru = new Guru();
+                guru.setId(resultSet.getInt("id"));
+                guru.setNama(resultSet.getString("nama"));
+                guru.setMataPelajaran(resultSet.getString("mata_pelajaran"));
+                guru.setNoTelepon(resultSet.getString("no_telepon"));
+                guru.setEmail(resultSet.getString("email"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Menutup statement dan resultSet
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return guru;
+    }
+
+    public void addGuru(Guru guru) {
+        PreparedStatement statement = null;
+        try {
+            // Membuat pernyataan SQL dengan parameter
+            String query = "INSERT INTO guru (nama, mata_pelajaran, no_telepon, email) VALUES (?, ?, ?, ?)";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, guru.getNama());
+            statement.setString(2, guru.getMataPelajaran());
+            statement.setString(3, guru.getNoTelepon());
+            statement.setString(4, guru.getEmail());
+
+            // Menjalankan pernyataan SQL
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Menutup statement
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            // Menutup koneksi ke database
+            DatabaseUtil.closeConnection(connection);
+        }
+    }
+
+    public void updateGuru(Guru guru) {
+        PreparedStatement statement = null;
+        try {
+            // Membuat pernyataan SQL dengan parameter
+            String query = "UPDATE guru SET nama = ?, mata_pelajaran = ?, no_telepon = ?, email = ? WHERE id = ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, guru.getNama());
+            statement.setString(2, guru.getMataPelajaran());
+            statement.setString(3, guru.getNoTelepon());
+            statement.setString(4, guru.getEmail());
+            statement.setInt(5, guru.getId());
+
+            // Menjalankan pernyataan SQL
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Menutup statement
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            // Menutup koneksi ke database
+            DatabaseUtil.closeConnection(connection);
+        }
+    }
+
+    public void deleteGuru(int id) {
+        PreparedStatement statement = null;
+        try {
+            // Membuat pernyataan SQL dengan parameter
+            String query = "DELETE FROM guru WHERE id = ?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+
+            // Menjalankan pernyataan SQL
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Menutup statement
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            // Menutup koneksi ke database
+            DatabaseUtil.closeConnection(connection);
+        }
     }
 }

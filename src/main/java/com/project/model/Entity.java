@@ -8,6 +8,10 @@ public abstract class Entity {
   public String nama;
   public String email;
   public String phone;
+  
+  public Entity() {
+
+  }
 
   public Entity(String nama, String email, String phone) {
     this.nama = nama;

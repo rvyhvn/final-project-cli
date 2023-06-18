@@ -10,6 +10,10 @@ public class WaliMurid extends Entity {
     private int idWali;
     private ArrayList<Siswa> anak;
 
+    public WaliMurid() {
+
+    }
+
     public WaliMurid(int idWali, String nama, String email, String phone, ArrayList<Siswa> anak) {
       super(nama, email, phone);
       this.idWali = idWali;
@@ -33,6 +37,5 @@ public class WaliMurid extends Entity {
     public void setAnak(ArrayList<Siswa> anak){
       this.anak = anak;
     }
-    // Metode untuk operasi CRUD
 
 }

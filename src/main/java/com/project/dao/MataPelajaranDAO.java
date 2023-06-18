@@ -54,7 +54,7 @@ public class MataPelajaranDAO {
 
         // Dapatkan daftar Kelas untuk MataPelajaran dengan menggunakan DAO yang sesuai
         KelasDAO kelasDAO = new KelasDAO(connection);
-        List<Kelas> kelasList = kelasDAO.getKelasByMapelId(idMapel);
+        List<Kelas> kelasList = kelasDAO.getKelasById(idKelas);
 
         return new MataPelajaran(idMapel, namaMapel, new ArrayList<Kelas>());
     }

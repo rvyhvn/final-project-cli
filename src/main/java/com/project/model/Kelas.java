@@ -13,15 +13,21 @@ public class Kelas {
   private String tingkat;
   private int urutan;
   private boolean isIpa;
+  private String namaKelas;
   private ArrayList<Guru> guru;
   private ArrayList<Siswa> siswa;
   private ArrayList<MataPelajaran> mapel;
 
-  public Kelas(int idKelas, String tingkat, int urutan, boolean isIpa, ArrayList<Guru> guru, ArrayList<Siswa> siswa, ArrayList<MataPelajaran> mapel) {
+  public Kelas() {
+
+  }
+
+  public Kelas(int idKelas, String tingkat, int urutan, boolean isIpa, String namaKelas, ArrayList<Guru> guru, ArrayList<Siswa> siswa, ArrayList<MataPelajaran> mapel) {
     this.idKelas = idKelas;
     this.tingkat = tingkat;
     this.urutan = urutan;
     this.isIpa = isIpa;
+    this.namaKelas = namaKelas;
     this.guru = guru;
     this.siswa = siswa;
     this.mapel = mapel;
@@ -83,6 +89,19 @@ public class Kelas {
     this.isIpa = isIpa;
   }
 
+  public void setNamaKelas(String namaKelas) {
+      // Mengurai namaKelas menjadi tingkat, jurusan, dan urutan
+      String[] parts = namaKelas.split(" ");
+      tingkat = parts[0];
+
+      if (parts[1].equalsIgnoreCase("IPA")) {
+          isIpa = true;
+      } else {
+          isIpa = false;
+      }
+
+      urutan = Integer.parseInt(parts[2]);
+  }
   public void setGuru(ArrayList<Guru> guru){
     this.guru = guru;
   }

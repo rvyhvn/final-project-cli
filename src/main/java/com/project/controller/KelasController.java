@@ -2,7 +2,6 @@ package com.project.controller;
 
 import com.project.dao.KelasDAO;
 import com.project.model.Kelas;
-import com.project.util.DatabaseUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,30 +9,48 @@ import java.util.List;
 
 public class KelasController {
     private KelasDAO kelasDAO;
-    private Connection connection;
 
-    public KelasController() {
+    public KelasController(Connection connection) {
+        this.kelasDAO = new KelasDAO(connection);
+    }
+
+    public List<Kelas> getAllKelas() {
         try {
-            connection = DatabaseUtil.getConnection();
-            kelasDAO = new KelasDAO(connection);
+            return kelasDAO.getAllKelas();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Kelas getKelasById(int idKelas) {
+        try {
+            return kelasDAO.getKelasById(idKelas);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void addKelas(Kelas kelas) {
+        try {
+            kelasDAO.addKelas(kelas);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void addKelas(Kelas kelas) {
-        kelasDAO.addKelas(kelas);
-    }
-
-    public List<Kelas> getAllKelas() {
-        return kelasDAO.getAllKelas();
-    }
-
-    public void closeConnection() {
+    public void updateKelas(Kelas kelas) {
         try {
-            if (connection != null) {
-                connection.close();
-            }
+            kelasDAO.updateKelas(kelas);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteKelas(int idKelas) {
+        try {
+            kelasDAO.deleteKelas(idKelas);
         } catch (SQLException e) {
             e.printStackTrace();
         }
