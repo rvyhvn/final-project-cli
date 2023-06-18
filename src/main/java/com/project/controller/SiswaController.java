@@ -36,15 +36,6 @@ public class SiswaController {
         }
     }
 
-    public List<Siswa> getSiswaByKelas(int idKelas) {
-        try {
-            return siswaDAO.getSiswaByKelas(idKelas);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public void addSiswa(String nama, String email, String phone, int idKelas, int idWali) {
         try {
             siswaDAO.addSiswa(createSiswa(nama, email, phone, idKelas, idWali));

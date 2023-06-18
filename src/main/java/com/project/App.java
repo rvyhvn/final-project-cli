@@ -3,32 +3,45 @@ package com.project;
 import com.project.controller.*;
 import com.project.util.*;
 import com.project.model.*;
-
+import java.sql.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public class App {
     public static void main(String[] args) {
+        Connection connection = null;
         try {
-            Connection connection = DatabaseUtil.getConnection();
-            WaliMuridController waliMuridController = new WaliMuridController(connection);
+            // Membuat koneksi ke database menggunakan DatabaseUtil
+            connection = DatabaseUtil.getConnection();
 
-            // Memanggil fungsi getAllWaliMurid untuk mendapatkan daftar semua wali murid
-            List<WaliMurid> waliMuridList = waliMuridController.getAllWaliMurid();
+            // Membuat objek SiswaController
+            SiswaController siswaController = new SiswaController(connection);
 
-            // Iterasi melalui daftar wali murid dan cetak informasi setiap wali murid
-            for (WaliMurid waliMurid : waliMuridList) {
-                System.out.println("ID Wali: " + waliMurid.getIdWali());
-                System.out.println("Nama: " + waliMurid.getNama());
-                System.out.println("Email: " + waliMurid.getEmail());
-                System.out.println("No. Telepon: " + waliMurid.getPhone());
-                System.out.println("--------------------");
+            // Mengambil semua siswa dari database
+            List<Siswa> siswaList = siswaController.getAllSiswa();
+
+            // Menampilkan informasi siswa
+            for (Siswa siswa : siswaList) {
+                System.out.println("ID Siswa: " + siswa.getIdSiswa());
+                System.out.println("Nama: " + siswa.getNama());
+                System.out.println("Email: " + siswa.getEmail());
+                System.out.println("Phone: " + siswa.getPhone());
+                System.out.println("ID Kelas: " + siswa.getKelas().getIdKelas());
+                System.out.println("Tingkat Kelas: " + siswa.getKelas().getTingkat());
+                System.out.println("Urutan Kelas: " + siswa.getKelas().getUrutan());
+                System.out.println("Is IPA: " + siswa.getKelas().getIsIpa());
+                System.out.println("ID Wali Murid: " + siswa.getWaliMurid().getIdWali());
+                System.out.println("Nama Wali Murid: " + siswa.getWaliMurid().getNama());
+                System.out.println("Email Wali Murid: " + siswa.getWaliMurid().getEmail());
+                System.out.println("Phone Wali Murid: " + siswa.getWaliMurid().getPhone());
+                System.out.println("----------------------------------");
             }
-
-            waliMuridController.closeConnection(); // Tutup koneksi setelah selesai
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            // Menutup koneksi dan sumber daya terkait menggunakan DatabaseUtil
+            DatabaseUtil.closeConnection(connection);
         }
     }
 }
