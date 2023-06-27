@@ -1,11 +1,7 @@
 package com.project.dao;
 
-import com.project.model.Kelas;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.project.model.*;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,82 +12,138 @@ public class KelasDAO {
         this.connection = connection;
     }
 
-    public void addKelas(Kelas kelas) {
-        try {
-            String query = "INSERT INTO kelas (id_kelas, tingkat, urutan, is_ipa) VALUES (?, ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, kelas.getIdKelas());
-            preparedStatement.setString(2, kelas.getTingkat());
-            preparedStatement.setInt(3, kelas.getUrutan());
-            preparedStatement.setBoolean(4, kelas.getIsIpa());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<Kelas> getAllKelas() {
+    public List<Kelas> getAllKelas() throws SQLException {
         List<Kelas> kelasList = new ArrayList<>();
+        Statement statement = null;
+        ResultSet resultSet = null;
         try {
-            String query = "SELECT * FROM kelas";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM kelas");
             while (resultSet.next()) {
-                int idKelas = resultSet.getInt("id_kelas");
-                String tingkat = resultSet.getString("tingkat");
-                int urutan = resultSet.getInt("urutan");
-                boolean isIpa = resultSet.getBoolean("is_ipa");
-                Kelas kelas = new Kelas(idKelas, tingkat, urutan, isIpa, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                Kelas kelas = new Kelas();
+                kelas.setIdKelas(resultSet.getInt("id_kelas"));
+                kelas.setNamaKelas(resultSet.getString("nama_kelas"));
+                // Set properties lainnya sesuai dengan kolom-kolom yang ada dalam tabel
                 kelasList.add(kelas);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            connection.close();
         }
         return kelasList;
     }
 
-    public List<Kelas> getKelasByMapelId(int idMapel){
-      String query = "SELECT k.* FROM k JOIN kelas_mapel km ON k.id_kelas = km.id_kelas WHERE km.id_mapel = ?";
-      List<Kelas> kelasList = new ArrayList<>();
-
-      try (PreparedStatement statement = connection.prepareStatement(query)) {
-        statement.setInt(1, idMapel);
-        ResultSet resultSet = statement.executeQuery();
-
-        while (resultSet.next()) {
-          int idKelas = resultSet.getInt("id_kelas");
-          String tingkat = resultSet.getString("tingkat");
-          int urutan = resultSet.getInt("urutan");
-          boolean isIpa = resultSet.getBoolean("is_ipa");
-          Kelas kelas = new Kelas(idKelas, tingkat, urutan, isIpa, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-          kelasList.add(kelas);
-        }
-      } catch (SQLException e){
-        e.printStackTrace();
-      }
-
-      return kelasList;
-    }
-
-    public Kelas getKelasById(int idKelas) {
-        String query = "SELECT * FROM kelas WHERE id_kelas = ?";
+    public Kelas getKelasById(int idKelas) throws SQLException {
         Kelas kelas = null;
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement("SELECT * FROM kelas WHERE id_kelas = ?");
             statement.setInt(1, idKelas);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    String tingkat = resultSet.getString("tingkat");
-                    int urutan = resultSet.getInt("urutan");
-                    boolean isIpa = resultSet.getBoolean("is_ipa");
-                    kelas = new Kelas(idKelas, tingkat, urutan, isIpa, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-                }
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                kelas = new Kelas();
+                kelas.setIdKelas(resultSet.getInt("id_kelas"));
+                kelas.setNamaKelas(resultSet.getString("nama_kelas"));
+                // Set properties lainnya sesuai dengan kolom-kolom yang ada dalam tabel
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            connection.close();
         }
-
         return kelas;
+    }
+
+    public void addKelas(Kelas kelas) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("INSERT INTO kelas (nama_kelas) VALUES (?)");
+            statement.setString(1, kelas.getNamaKelas());
+            // Set properties lainnya sesuai dengan kolom-kolom yang ada dalam tabel
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            connection.close();
+        }
+    }
+
+    public void updateKelas(Kelas kelas) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("UPDATE kelas SET nama_kelas = ? WHERE id_kelas = ?");
+            statement.setString(1, kelas.getNamaKelas());
+            // Set properties lainnya sesuai dengan kolom-kolom yang ada dalam tabel
+            statement.setInt(2, kelas.getIdKelas());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            connection.close();
+        }
+    }
+
+    public void deleteKelas(int idKelas) throws SQLException {
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement("DELETE FROM kelas WHERE id_kelas = ?");
+            statement.setInt(1, idKelas);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            connection.close();
+        }
     }
 }

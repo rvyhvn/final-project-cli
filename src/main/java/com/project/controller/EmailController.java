@@ -5,6 +5,7 @@ import com.project.model.Email;
 import com.project.model.WaliMurid;
 import com.project.util.EmailUtil;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class EmailController {
         this.waliMuridDAO = waliMuridDAO;
     }
 
-    public void sendEmailToRecipients(int waliMuridId, String subject, String body, String attachmentPath) {
+    public void sendEmailToRecipients(int waliMuridId, String subject, String body, String attachmentPath) throws SQLException {
         // Mendapatkan informasi wali murid berdasarkan ID dari database
         WaliMurid waliMurid = waliMuridDAO.getWaliMuridById(waliMuridId);
 

@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseUtil {
-    private static final String CONFIG_FILE_PATH = System.getProperty("user.home") + "/.config/oop-final-project/config.properties";
+    private static final String CONFIG_FILE_PATH = System.getProperty("user.home") + "/.config/final-project-cli/config.properties";
 
     public static Connection getConnection() throws SQLException {
         Properties config = loadConfigProperties();
@@ -26,5 +26,15 @@ public class DatabaseUtil {
             System.out.println("Failed to load config.properties file: " + e.getMessage());
         }
         return config;
+    }
+
+    public static void closeConnection(Connection connection) {
+      if (connection != null) {
+        try {
+          connection.close();
+        } catch (SQLException e) {
+          System.out.println("Failed to close connection!");
+        }
+      }
     }
 }

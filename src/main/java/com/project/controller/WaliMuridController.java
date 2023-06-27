@@ -3,49 +3,66 @@ package com.project.controller;
 import com.project.dao.WaliMuridDAO;
 import com.project.model.WaliMurid;
 import com.project.util.DatabaseUtil;
-import java.sql.*;
+
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class WaliMuridController {
-
     private WaliMuridDAO waliMuridDAO;
+    private Connection connection;
 
-    public WaliMuridController() {
+    // Constructor
+    public WaliMuridController(Connection connection) {
+        waliMuridDAO = new WaliMuridDAO(connection); // Menginisialisasi objek WaliMuridDAO
+    }
+
+
+    public List<WaliMurid> getAllWaliMurid() {
+        List<WaliMurid> waliMuridList = null;
         try {
-            Connection connection = DatabaseUtil.getConnection();
-            this.waliMuridDAO = new WaliMuridDAO(connection);
+            waliMuridList = waliMuridDAO.getAllWaliMurid();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return waliMuridList;
+    }
+
+    public WaliMurid getWaliMuridById(int idWali) {
+        WaliMurid waliMurid = null;
+        try {
+            waliMurid = waliMuridDAO.getWaliMuridById(idWali);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return waliMurid;
+    }
+
+    public void addWaliMurid(WaliMurid waliMurid) {
+        try {
+            waliMuridDAO.addWaliMurid(waliMurid);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void addWaliMurid(int idWali, String nama, String email, String phone) {
-        WaliMurid waliMurid = new WaliMurid(idWali, nama, email, phone, null);
-        waliMuridDAO.addWaliMurid(waliMurid);
-    }
-
-    public void updateWaliMurid(int idWali, String nama, String email, String phone) {
-        WaliMurid waliMurid = new WaliMurid(idWali, nama, email, phone, null);
-        waliMuridDAO.updateWaliMurid(waliMurid);
+    public void updateWaliMurid(WaliMurid waliMurid) {
+        try {
+            waliMuridDAO.updateWaliMurid(waliMurid);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteWaliMurid(int idWali) {
-        waliMuridDAO.deleteWaliMurid(idWali);
+        try {
+            waliMuridDAO.deleteWaliMurid(idWali);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void getAllWaliMurid() {
-        List<WaliMurid> waliMuridList = waliMuridDAO.getAllWaliMurid();
-        if (waliMuridList.isEmpty()) {
-            System.out.println("Tidak ada data wali murid");
-        } else {
-            for (WaliMurid waliMurid : waliMuridList) {
-                System.out.println("ID Wali Murid: " + waliMurid.getIdWali());
-                System.out.println("Nama: " + waliMurid.getNama());
-                System.out.println("Email: " + waliMurid.getEmail());
-                System.out.println("Phone: " + waliMurid.getPhone());
-                System.out.println("--------------------");
-            }
-        }
+    public void closeConnection() {
+        DatabaseUtil.closeConnection(connection);
     }
 }

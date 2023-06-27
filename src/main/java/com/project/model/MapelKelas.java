@@ -13,6 +13,10 @@ public class MapelKelas {
   private MataPelajaran mapel;
   private Kelas kelas;
 
+  public MapelKelas() {
+
+  }
+
   public MapelKelas(int idMapelKelas, MataPelajaran mapel, Kelas kelas) {
     this.idMapelKelas = idMapelKelas;
     this.mapel = mapel;

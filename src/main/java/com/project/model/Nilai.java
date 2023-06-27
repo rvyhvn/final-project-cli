@@ -12,6 +12,10 @@ public class Nilai {
   private double nilaiMean;
   private ArrayList<Siswa> siswaList;
 
+  public Nilai() {
+
+  }
+
   public Nilai(int idNilai, double nilai, double nilaiMean) {
     this.idNilai = idNilai;
     this.nilai = nilai;

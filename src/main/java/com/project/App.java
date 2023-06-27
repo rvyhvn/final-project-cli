@@ -1,64 +1,102 @@
 package com.project;
 
-import com.project.model.*;
 import com.project.controller.*;
-
-import java.io.IOException;
+import com.project.util.*;
+import com.project.model.*;
+import java.sql.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
+import com.project.controller.LoginController;
+import com.project.controller.MainViewController;
+import com.project.util.DatabaseUtil;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class App {
+public class App extends Application {
+
     public static void main(String[] args) {
-    
-    Kelas kelas10 = new Kelas(1, "X", 3, true, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-
-    // Membuat objek WaliMurid
-    WaliMurid waliMurid1 = new WaliMurid(1, "John Doe", "john@gmail,com", "0812345678", new ArrayList<>());
-
-    // Membuat objek Nilai
-    Nilai nilaiMean1 = new Nilai(1, 100.0, 70.0);
-
-    // Membuat objek Siswa
-    Siswa siswa = new Siswa(1, "John Smith", kelas10, "john.smith@example.com", "987654321", waliMurid1, nilaiMean1);
-
-    // Membuat objek Guru
-    Guru guru = new Guru(1, "Jane Doe", "jane@gmail.com", "0812345678", null, null);
-
-    // Membuat objek Nilai
-    Nilai nilai = new Nilai(1, 90.0, 80.0);
-    
-    // Membuat objek Laporan
-    int idLaporan = 1;
-    Date tanggal = new Date();
-    Laporan laporan = new Laporan(idLaporan, tanggal, kelas10, siswa, guru, nilai);
-
-    // Ekspor ke CSV
-    String filePath = "output.csv";
-    try {
-        laporan.exportToCSV(filePath);
-        System.out.println("Laporan berhasil diekspor ke " + filePath);
-    } catch (IOException e) {
-        System.out.println("Terjadi kesalahan saat mencoba mengekspor laporan: " + e.getMessage());
+        launch(args);
     }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Connection connection = null;
+        try {
+            // Membuat koneksi ke database menggunakan DatabaseUtil
+            connection = DatabaseUtil.getConnection();
 
-    int idSiswa = siswa.getIdSiswa();
-    Kelas kelasSiswa = siswa.getKelas();
-    WaliMurid waliMuridSiswa = siswa.getWaliMurid();
-    Nilai nilaiMeanSiswa = siswa.getNilaiMean();
+            // Load LoginView.fxml
+            // Load file FXML untuk login view
+            FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/project/view/LoginView.fxml"));
+            Parent loginRoot = loginLoader.load();
+            LoginController loginController = loginLoader.getController();
+            loginController.setConnection(connection);
+            loginController.setOnLoginSuccess(() -> {
+                try {
+                    // Load file FXML untuk main view
+                    FXMLLoader mainLoader = new FXMLLoader(App.class.getResource("/com/project/view/MainView.fxml"));
+                    Parent mainRoot = mainLoader.load();
+                    MainViewController mainController = mainLoader.getController();
+                    mainController.initData(); // Mengambil data siswa dan melakukan inisialisasi tampilan
 
-    // Menampilkan informasi siswa
-    System.out.println("Informasi Siswa:");
-    System.out.println("ID Siswa: " + idSiswa);
-    System.out.println("Nama Siswa: " + siswa.getNama());
-    System.out.println("Kelas: " + kelasSiswa.getNamaKelas());
-    System.out.println("Email: " + siswa.getEmail());
-    System.out.println("Phone: " + siswa.getPhone());
-    System.out.println("Wali Murid: " + waliMuridSiswa.getNama());
-    System.out.println("Nilai Mean: " + nilaiMeanSiswa.getNilai());
+                    // Set scene untuk main view
+                    primaryStage.setScene(new Scene(mainRoot));
+                    primaryStage.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+            // Set scene untuk login view
+            primaryStage.setScene(new Scene(loginRoot));
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Menutup koneksi dan sumber daya terkait menggunakan DatabaseUtil
+            DatabaseUtil.closeConnection(connection);
+        }
     }
 }
+// public class App {
+// public static void main(String[] args) {
+// Connection connection = null;
+// try {
+// // Membuat koneksi ke database menggunakan DatabaseUtil
+// connection = DatabaseUtil.getConnection();
+
+// // Membuat objek SiswaController
+// SiswaController siswaController = new SiswaController(connection);
+
+// // Mengambil semua siswa dari database
+// List<Siswa> siswaList = siswaController.getAllSiswa();
+
+// // Menampilkan informasi siswa
+// for (Siswa siswa : siswaList) {
+// System.out.println("ID Siswa: " + siswa.getIdSiswa());
+// System.out.println("Nama: " + siswa.getNama());
+// System.out.println("Email: " + siswa.getEmail());
+// System.out.println("Phone: " + siswa.getPhone());
+// System.out.println("ID Kelas: " + siswa.getKelas().getIdKelas());
+// System.out.println("Tingkat Kelas: " + siswa.getKelas().getTingkat());
+// System.out.println("Urutan Kelas: " + siswa.getKelas().getUrutan());
+// System.out.println("Is IPA: " + siswa.getKelas().getIsIpa());
+// System.out.println("ID Wali Murid: " + siswa.getWaliMurid().getIdWali());
+// System.out.println("Nama Wali Murid: " + siswa.getWaliMurid().getNama());
+// System.out.println("Email Wali Murid: " + siswa.getWaliMurid().getEmail());
+// System.out.println("Phone Wali Murid: " + siswa.getWaliMurid().getPhone());
+// System.out.println("----------------------------------");
+// }
+// } catch (SQLException e) {
+// e.printStackTrace();
+// } finally {
+// // Menutup koneksi dan sumber daya terkait menggunakan DatabaseUtil
+// DatabaseUtil.closeConnection(connection);
+// }
+// }
+// }

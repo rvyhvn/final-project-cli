@@ -14,6 +14,9 @@ public class Siswa extends Entity {
   private WaliMurid waliMurid;
   private Nilai nilaiMean;
 
+  public Siswa() {
+
+  }
 
   public Siswa(int idSiswa, String nama, Kelas kelas, String email, String phone, WaliMurid waliMurid, Nilai nilaiMean) {
     super(nama, email, phone);

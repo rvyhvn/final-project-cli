@@ -28,7 +28,7 @@ public class LoginDAO {
                 String nama = resultSet.getString("nama");
                 String phone = resultSet.getString("phone");
 
-                Guru guru = new Guru(idGuru, nama, email, phone, new ArrayList<Kelas>(), new ArrayList<Laporan>());
+                Guru guru = new Guru(idGuru, nama, email, phone, null, null);
                 return guru;
             }
         }

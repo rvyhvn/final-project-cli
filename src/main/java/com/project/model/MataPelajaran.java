@@ -11,6 +11,10 @@ public class MataPelajaran {
   private String namaMapel;
   private ArrayList<Kelas> kelas;
 
+  public MataPelajaran() {
+
+  }
+
   public MataPelajaran(int idMapel, String namaMapel, ArrayList<Kelas> kelas) {
     this.idMapel = idMapel;
     this.namaMapel = namaMapel;
