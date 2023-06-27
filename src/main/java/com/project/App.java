@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -31,14 +32,14 @@ public class App extends Application {
 
             // Load LoginView.fxml
             // Load file FXML untuk login view
-            FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("project/LoginView.fxml"));
+            FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("/com/project/view/LoginView.fxml"));
             Parent loginRoot = loginLoader.load();
             LoginController loginController = loginLoader.getController();
             loginController.setConnection(connection);
             loginController.setOnLoginSuccess(() -> {
                 try {
                     // Load file FXML untuk main view
-                    FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("view/MainView.fxml"));
+                    FXMLLoader mainLoader = new FXMLLoader(App.class.getResource("/com/project/view/MainView.fxml"));
                     Parent mainRoot = mainLoader.load();
                     MainViewController mainController = mainLoader.getController();
                     mainController.initData(); // Mengambil data siswa dan melakukan inisialisasi tampilan
